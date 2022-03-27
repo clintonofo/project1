@@ -2,164 +2,281 @@ package dkip.oop;
 
 import java.io.IOException;
 import java.util.*;
+import java.sql.*;
+import java.util.PriorityQueue;
+import dkip.oop.DAOs.MySqlPlayerDao;
+import dkip.oop.DAOs.PlayerDaoInterface;
+import dkip.oop.Exceptions.DaoException;
+import java.util.List;
+import java.util.Scanner;
 
-//Project Theme :
+import java.util.*;
+
 public class MainApp {
-    //ArrayList<Players> players;
 
-    public static void main(String[] args)
-    {
-        MainApp theApp = new MainApp();
-        System.out.println("Isaac's 2nd project");
-        System.out.println("- the english premier league.");
-        theApp.start();
+    public static void main(String[] args) {
+        // TODO Auto-generated method stub
+        menu();
     }
-    private void start()
-    {
-        try
+
+    public static void menu() {
+        Scanner input = new Scanner(System.in);
+        boolean mainLoop = true;
+
+        int choice;
+        do {
+            System.out.println("Main Menu\n");
+            System.out.print("1.) Display All Elements \n");
+            System.out.print("2.) Choose key\n");
+            System.out.print("3.) TreeMap.\n");
+            System.out.print("4.) Priority Queue for Salary.\n");
+            System.out.print("5.) FindAllPlayers.\n");
+            System.out.print("6.) Exit\n");
+            System.out.print("\nEnter Your Menu Choice: ");
+
+            choice = input.nextInt();
+
+
+        }
+
+        while (choice > 7);
+        if (choice == 1) {
+
+            ArrayList<team> team = new ArrayList<team>();
+
+            // Initialize an ArrayList with add()
+            team.add(new team("John", "moons", 15000, "ben", "sam,", "atlanta"));
+            team.add(new team("Eoin", "rockets", 25000, "john", "oliver,", "san fracnsio"));
+            team.add(new team("liam", "spices", 35000, "ben", "sam,", "philly"));
+            team.add(new team("clinton", "ice", 5000, "rita", "sammy,", "la"));
+            team.add(new team("allen", "lakers", 15000, "luke", "sam,", "la"));
+            team.add(new team("barry", "warriors", 25000, "benson", "jamal,", "golden state"));
+            team.add(new team("lia", "clippers", 65000, "ella", "rio,", "charlotte"));
+            team.add(new team("rhia", "zooms", 15000, "lia", "clinton,", "cleveland"));
+            team.add(new team("clinton", "heat", 10000, "elsa", "ronaldo,", "chicagi"));
+            team.add(new team("demar", "raptors", 20000, "leon", "samuel,", "toronto"));
+
+            for (team t : team) {
+                System.out.println(t);  // Will invoke overrided `toString()` method
+            }
+        } else if (choice == 2) {
+            HashMap<String, team> bballTeam = new HashMap<String, team>();
+            team t1 = new team("John", "moons", 15000, "ben", "sam,", "atlanta");
+            team t2 = new team("Eoin", "rockets", 25000, "john", "oliver,", "san fracnsio");
+            team t3 = new team("liam", "spices", 35000, "ben", "sam,", "philly");
+            team t4 = new team("clinton", "ice", 5000, "rita", "sammy,", "la");
+            team t5 = new team("allen", "lakers", 15000, "luke", "sam,", "la");
+            team t6 = new team("barry", "warriors", 25000, "benson", "jamal,", "golden state");
+            team t7 = new team("lia", "clippers", 65000, "ella", "rio,", "charlotte");
+            team t8 = new team("rhia", "zooms", 15000, "lia", "clinton,", "cleveland");
+            team t9 = new team("clinton", "heat", 10000, "elsa", "ronaldo,", "chicagi");
+            team t10 = new team("demar", "raptors", 20000, "leon", "samuel,", "toronto");
+
+
+            // Add keys and values (Country, City)
+            bballTeam.put(t1.getPlayerName(), t1);
+            bballTeam.put(t2.getPlayerName(), t2);
+            bballTeam.put(t3.getPlayerName(), t3);
+            bballTeam.put(t4.getPlayerName(), t4);
+            bballTeam.put(t5.getPlayerName(), t5);
+            bballTeam.put(t6.getPlayerName(), t6);
+            bballTeam.put(t7.getPlayerName(), t7);
+            bballTeam.put(t8.getPlayerName(), t8);
+            bballTeam.put(t9.getPlayerName(), t9);
+            bballTeam.put(t10.getPlayerName(), t10);
+
+
+            String choice2 = "";
+            while (!choice2.equalsIgnoreCase("back")) {
+                System.out.println("Choose Key 1 - john");
+                System.out.println("Choose Key 2 - eoin");
+                System.out.println("Choose Key 3 - liam");
+                System.out.println("Choose Key 4 - clinton");
+                System.out.println("Choose Key 5 - allen");
+                System.out.println("Choose Key 6 - barry");
+                System.out.println("Choose Key 7 - lia");
+                System.out.println("Choose Key 8 - rhia");
+                System.out.println("Choose Key 9 - clinton");
+                System.out.println("Choose Key 10 - demar");
+                System.out.println("back - back");
+
+                choice2 = input.nextLine();
+
+                if (choice2.equalsIgnoreCase("john")) {
+
+                    System.out.println(bballTeam.get(t1.getPlayerName()));
+                } else if (choice2.equalsIgnoreCase("eoin")) {
+                    System.out.println(bballTeam.get(t2.getPlayerName()));
+                } else if (choice2.equalsIgnoreCase("liam")) {
+                    System.out.println(bballTeam.get(t3.getPlayerName()));
+                } else if (choice2.equalsIgnoreCase("clinton")) {
+                    System.out.println(bballTeam.get(t4.getPlayerName()));
+                } else if (choice2.equalsIgnoreCase("allen")) {
+                    System.out.println(bballTeam.get(t5.getPlayerName()));
+                } else if (choice2.equalsIgnoreCase("barry")) {
+                    System.out.println(bballTeam.get(t6.getPlayerName()));
+                } else if (choice2.equalsIgnoreCase("lia")) {
+                    System.out.println(bballTeam.get(t7.getPlayerName()));
+                } else if (choice2.equalsIgnoreCase("rhia")) {
+                    System.out.println(bballTeam.get(t8.getPlayerName()));
+                } else if (choice2.equalsIgnoreCase("clinton")) {
+                    System.out.println(bballTeam.get(t9.getPlayerName()));
+                } else if (choice2.equalsIgnoreCase("demar")) {
+                    System.out.println(bballTeam.get(t10.getPlayerName()));
+                } else if (choice2.equalsIgnoreCase("back")) {
+                    menu();
+
+                } else {
+                    System.out.println("Wrong input");
+                }
+
+
+            }
+            ;
+
+
+        } else if (choice == 3) {
+            TreeMap<Long, team> teamMap = new TreeMap<>();
+            teamMap.put(200L, new team("John", "moons", 15000, "ben", "sam,", "atlanta"));
+            teamMap.put(300L, new team("Eoin", "rockets", 25000, "john", "oliver,", "san fracnsio"));
+            teamMap.put(400L, new team("liam", "spices", 35000, "ben", "sam,", "philly"));
+            teamMap.put(120L, new team("clinton", "ice", 5000, "rita", "sammy,", "la"));
+            teamMap.put(220L, new team("allen", "lakers", 15000, "luke", "sam,", "la"));
+            teamMap.put(110L, new team("barry", "warriors", 25000, "benson", "jamal,", "golden state"));
+            teamMap.put(209L, new team("lia", "clippers", 65000, "ella", "rio,", "charlotte"));
+            teamMap.put(234L, new team("rhia", "zooms", 15000, "lia", "clinton,", "cleveland"));
+            teamMap.put(112L, new team("clinton", "heat", 10000, "elsa", "ronaldo,", "chicagi"));
+            teamMap.put(609L, new team("demar", "raptors", 20000, "leon", "samuel,", "toronto"));
+
+            System.out.println("TreeMap");
+            Set<Long> keySet = teamMap.keySet();
+
+            for (Long TheKey : keySet) {
+                team t = teamMap.get(TheKey);
+                System.out.println(" Key:  " + TheKey + ", PlayerNsme:  " + t.getPlayerName() + ", teamName :" + t.getTeamName()
+                        + ", salary:" + t.getSalary() + ", manager:" + t.getManager() + ", coach:" + t.getCoach() + ", city : " + t.getCity());
+
+
+            }
+        }
+
+        else if (choice == 4) {
+
+            PriorityQueue<team> teamQueue = new PriorityQueue<team>(
+                    new UserSalaryComparator(SortType.Ascending));
+
+            teamQueue.add(new team("John", "moons", 15000, "ben", "sam,", "atlanta"));
+            teamQueue.add(new team("Eoin", "rockets", 25000, "john", "oliver,", "san fracnsio"));
+            teamQueue.add(new team("liam", "spices", 35000, "ben", "sam,", "philly"));
+            teamQueue.add(new team("clinton", "ice", 5000, "rita", "sammy,", "la"));
+            teamQueue.add(new team("allen", "lakers", 15000, "luke", "sam,", "la"));
+            teamQueue.add(new team("barry", "warriors", 25000, "benson", "jamal,", "golden state"));
+            teamQueue.add(new team("lia", "clippers", 65000, "ella", "rio,", "charlotte"));
+            teamQueue.add(new team("rhia", "zooms", 15000, "lia", "clinton,", "cleveland"));
+            teamQueue.add(new team("clinton", "heat", 10000, "elsa", "ronaldo,", "chicagi"));
+            teamQueue.add(new team("demar", "raptors", 20000, "leon", "samuel,", "toronto"));
+
+
+            System.out.println("Values in order of Salary Priority:");
+            //iterator & remove
+            Iterator<team> iterator = teamQueue.iterator();
+            while (iterator.hasNext()) {
+                System.out.println(teamQueue.remove());
+            }
+        }
+        else if (choice == 5) {
+
+            database();
+
+        }
+
+    }
+
+
+
+
+
+
+    public static void database(){
+        System.out.println("\nConnecting to MySQL Database called \"user_database\" using MySQL JDBC Driver");
+        String url = "jdbc:mysql://localhost/";
+        String dbName = "user_database";
+        String userName = "root";
+        String password = "";
+        try ( Connection conn = DriverManager.getConnection(url + dbName, userName, password) )
         {
-            displayMainMenu();        // User Interface - Menu
-        } catch (IOException e)
+            System.out.println("\nConnected to the database.");
+            Statement statement = conn.createStatement();
+            String sqlQuery = "select * from user";
+            ResultSet resultSet = statement.executeQuery( sqlQuery );
+            while ( resultSet.next() )
+            {
+                String playerName = resultSet.getString("player_name");
+                String teamName = resultSet.getString("team_name");
+                int salary = resultSet.getInt("salary");
+                String manager = resultSet.getString("manager_name");
+                String coach = resultSet.getString("coach_name");
+                String city = resultSet.getString("city");
+
+
+                System.out.print("Player name = " + playerName + ", ");
+                System.out.print("team name = " + teamName + ", ");
+                System.out.print("salary = " + salary + ", ");
+                System.out.println("manager : " + manager);
+                System.out.println("coach : " + coach);
+                System.out.println("city : " + city);
+            }
+            System.out.println("\nFinished - Disconnected from database");
+        }
+        catch (SQLException ex)
+        {
+            System.out.println("Failed to connect to database - check MySQL is running and that you are using the correct database details");
+            ex.printStackTrace();
+        }
+        PlayerDaoInterface IPlayerDao = new MySqlPlayerDao();
+        try {
+            System.out.println("\nCall findAllPlayers()");
+            List<dkip.oop.DTOs.team> teams = IPlayerDao.findAllPlayers();
+
+            if (teams.isEmpty())
+                System.out.println("There are no Players");
+            else {
+                for (dkip.oop.DTOs.team t : teams)
+                    System.out.println("Player: " + t.toString());
+            }
+
+
+            // test dao - with username and password that we know are present in the database
+            System.out.println("\nCall: findPlayerBySalary()");
+            int salary = 2;
+            List<dkip.oop.DTOs.team> teams1 = IPlayerDao.findPlayerBySalary(salary);
+
+            if (teams1 != null)
+                System.out.println("Player found: " + teams1);
+            else
+                System.out.println("Player salary not found");
+
+            // test dao - with an invalid username (i.e. not in database)
+            salary = 23;
+            teams1 = IPlayerDao.findPlayerBySalary(salary);
+            if (teams1 != null)
+                System.out.println("Player salary: " + salary + " was found: " + teams1);
+            else
+                System.out.println("Player salary: " + salary + " is not valid.");
+            Scanner keyboard = new Scanner(System.in);
+            System.out.println("Enter player salary");
+            salary = keyboard.nextInt();
+            teams1 = IPlayerDao.findPlayerBySalary(salary);
+            if (teams1 != null)
+                System.out.println("Player salary: " + salary + " was found: " + teams1);
+            else
+                System.out.println("Player salary: " + salary + " is not valid.");
+
+        }
+        catch( DaoException e )
         {
             e.printStackTrace();
         }
-        map1();
-        map2();
-//        Players player1 = new Players("Jadon","Sancho","Right Wing", "Egypt",29);
-//        Players player2 = new Players("Son","Heung-Min","Right Wing", "South Korea",29);
-//        Players player3 = new Players("Diogo","Jota","Striker", "Portugal",25);
-//        Players player4 = new Players("Cristiano","Ronaldo","Striker", "Portugal",37);
-//        Players player5 = new Players("Harry","Kane","Striker", "Egypt",28);
-//        Players player6 = new Players("Sadio","Mane","Left Wing", "Senegal",29);
-//        Players player7 = new Players("Ivan","Toney","Striker", "England",26);
-//        Players player8 = new Players("Riyad","Mahrez","Right Wing", "Algeria",31);
-//        Players player9 = new Players("Raheem","Sterling","Left Wing", "England",27);
-//        Players player10 = new Players("Jamie","Vardy","Striker", "England",35);
-//
-//        players = new ArrayList<>();
-//        players.add(player1);
-//        players.add(player2);
-//        players.add(player3);
-//        players.add(player4);
-//        players.add(player5);
-//        players.add(player6);
-//        players.add(player7);
-//        players.add(player8);
-//        players.add(player9);
-//        players.add(player10);
 
-        map3();
-        System.out.println("Program ending, Goodbye");
-    }
-    private void displayMainMenu() throws IOException
-    {
-
-        final String MENU_ITEMS = "\n*** MAIN MENU OF OPTIONS ***\n"
-                + "1. Premier League Table - hashmap\n"
-                + "2. Premier League Players Details - treemap\n"
-                + "3. Premier League Team\n"
-                + "4. Exit\n"
-                + "Enter Option [1,4]";
-
-        final int TABLE = 1;
-        final int PLAYER = 2;
-        final int TEAM = 3;
-        final int EXIT = 4;
-
-        Scanner keyboard = new Scanner(System.in);
-        int option = 0;
-        do
-        {
-            System.out.println("\n" + MENU_ITEMS);
-            try
-            {
-                String usersInput = keyboard.nextLine();
-                option = Integer.parseInt(usersInput);
-                switch (option)
-                {
-                    case TABLE:
-                        System.out.println("Prem table option chosen");
-                        map1();
-                        break;
-                    case PLAYER:
-                        System.out.println("Players option chosen");
-                        map2();
-                        break;
-                    case TEAM:
-                        System.out.println("Team details option chosen");
-                        map3();
-                        break;
-                    case EXIT:
-                        System.out.println("Exit Menu option chosen");
-                        break;
-                    default:
-                        System.out.print("Invalid option - please enter number in range");
-                        break;
-                }
-
-            } catch (InputMismatchException | NumberFormatException e)
-            {
-                System.out.print("Invalid option - please enter number in range");
-            }
-        } while (option != EXIT);
-
-        System.out.println("\nExiting Main Menu, goodbye.");
-
-    }
-    public static void map1(){
-        // Map: Table (String) => ArrayList object (containing list of teams)
-        Map< String, ArrayList<String>> premTable = new HashMap<>();
-        ArrayList<String> premList = new ArrayList<>();
-        premList.add("Manchester City");
-        premList.add("Liverpool");
-        premList.add("Chelsea");
-        premList.add("Manchester United");
-        premList.add("West Ham United");
-        premList.add("Arsenal");
-        premList.add("Tottenham Hotspur");
-        premList.add("Wolverhampton Wanderers");
-        premList.add("Southampton");
-        premList.add("Brighton & Hove Albion");
-        premTable.put("First ten", premList);
-        String key = "First ten";
-        premList = premTable.get(key);
-
-        System.out.print(key + " club: ");
-        for (String s : premList) {
-            System.out.print(s + ", ");
-        }
-        for (Map.Entry<String, ArrayList<String>> entry : premTable.entrySet()) {
-            key = entry.getKey();
-            ArrayList<String> list = entry.getValue();
-            System.out.println("Name: " + key + ", Friend: " + list);
-        }
-        for (int i = 0; i < premList.size(); i++) {
-            // Get each item (in this case print each item)
-            System.out.println(premList.get(i));
-        }
-    }
-    public static void map2(){
-        TreeMap<Long, Players> playerTreeMap = new TreeMap<>();
-        playerTreeMap.put(200034L, new Players("Bruno", "Fernandes", "Attacking Midfielder", "Portugal", 27));
-        playerTreeMap.put(200334L, new Players("Andrew", "Robertson", "Left Back", "Scotland", 28));
-        playerTreeMap.put(202034L, new Players("Paul", "Pogba", "Center Midfielder", "France", 29));
-        playerTreeMap.put(210034L, new Players("Michail", "Antonio", "Striker", "Jamaica", 31));
-        playerTreeMap.put(500034L, new Players("Gabriel", "Jesus", "Striker", "Brazil", 24));
-        playerTreeMap.put(207034L, new Players("Mason", "Mount", "Attacking Midfielder", "England", 23));
-        playerTreeMap.put(200934L, new Players("Kelechi", "Iheanacho", "Striker", "Portugal", 25));
-        playerTreeMap.put(200134L, new Players("Neal", "Maupay", "Striker", "France", 25));
-        playerTreeMap.put(202434L, new Players("Jarrod", "Bowen", "Left Wing", "England", 25));
-        playerTreeMap.put(212734L, new Players("Conor", "Gallagher", "Midfielder", "England", 22));
-
-
-        Set<Long> keySet = playerTreeMap.keySet();
-
-        for (Long key : keySet) {
-            Players Players = playerTreeMap.get(key);
-            System.out.println(" Key:  " + key + ", First Name: " + Players.getFirstName() + ", Last name: " + Players.getLastName()
-                    + ", Age:" + Players.getAge() + ", Position:" + Players.getPosition() + ", State:" + Players.getPosition());
-        }
-    }
-    public static void map3(){
     }
 }
