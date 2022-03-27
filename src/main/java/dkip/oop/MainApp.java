@@ -260,9 +260,9 @@ public class MainApp {
             salary = 23;
             teams1 = IPlayerDao.findPlayerBySalary(salary);
             if (teams1 != null)
-                System.out.println("Player salary: " + salary + " was found: " + teams1);
+                System.out.println("Player Salary: " + salary + " was found: " + teams1);
             else
-                System.out.println("Player salary: " + salary + " is not valid.");
+                System.out.println("Player Salary: " + salary + " is not valid.");
             Scanner keyboard = new Scanner(System.in);
             System.out.println("Enter player salary");
             salary = keyboard.nextInt();
