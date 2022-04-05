@@ -1,6 +1,5 @@
 package dkip.oop;
 
-import java.io.IOException;
 import java.util.*;
 import java.sql.*;
 import java.util.PriorityQueue;
@@ -9,8 +8,6 @@ import dkip.oop.DAOs.PlayerDaoInterface;
 import dkip.oop.Exceptions.DaoException;
 import java.util.List;
 import java.util.Scanner;
-
-import java.util.*;
 
 public class MainApp {
 
@@ -31,7 +28,8 @@ public class MainApp {
             System.out.print("3.) TreeMap.\n");
             System.out.print("4.) Priority Queue for Salary.\n");
             System.out.print("5.) FindAllPlayers.\n");
-            System.out.print("6.) Exit\n");
+            System.out.println("6.) Add players. \n");
+            System.out.print("7.) Exit\n");
             System.out.print("\nEnter Your Menu Choice: ");
 
             choice = input.nextInt();
@@ -158,9 +156,7 @@ public class MainApp {
 
 
             }
-        }
-
-        else if (choice == 4) {
+        } else if (choice == 4) {
 
             PriorityQueue<team> teamQueue = new PriorityQueue<team>(
                     new UserSalaryComparator(SortType.Ascending));
@@ -183,34 +179,32 @@ public class MainApp {
             while (iterator.hasNext()) {
                 System.out.println(teamQueue.remove());
             }
-        }
-        else if (choice == 5) {
+        } else if (choice == 5) {
 
             database();
 
         }
 
+        else if (choice == 6)
+        {
+            addPlayer();
+        }
+
     }
 
 
-
-
-
-
-    public static void database(){
+    public static void database() {
         System.out.println("\nConnecting to MySQL Database called \"user_database\" using MySQL JDBC Driver");
         String url = "jdbc:mysql://localhost/";
         String dbName = "user_database";
         String userName = "root";
         String password = "";
-        try ( Connection conn = DriverManager.getConnection(url + dbName, userName, password) )
-        {
+        try (Connection conn = DriverManager.getConnection(url + dbName, userName, password)) {
             System.out.println("\nConnected to the database.");
             Statement statement = conn.createStatement();
             String sqlQuery = "select * from user";
-            ResultSet resultSet = statement.executeQuery( sqlQuery );
-            while ( resultSet.next() )
-            {
+            ResultSet resultSet = statement.executeQuery(sqlQuery);
+            while (resultSet.next()) {
                 String playerName = resultSet.getString("player_name");
                 String teamName = resultSet.getString("team_name");
                 int salary = resultSet.getInt("salary");
@@ -227,9 +221,7 @@ public class MainApp {
                 System.out.println("city : " + city);
             }
             System.out.println("\nFinished - Disconnected from database");
-        }
-        catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             System.out.println("Failed to connect to database - check MySQL is running and that you are using the correct database details");
             ex.printStackTrace();
         }
@@ -272,11 +264,75 @@ public class MainApp {
             else
                 System.out.println("Player salary: " + salary + " is not valid.");
 
+
+            System.out.println("deletePlayerBySalary()");
+            int salary2 = 0;
+            List<dkip.oop.DTOs.team> t = IPlayerDao.deletePlayerBySalary(salary2);
+
+            if (t != null)
+                if (t != null)
+                    System.out.println("Player with salary " + salary2 + " was found and deleted");
+                else
+                    System.out.println("Player with " + salary2 + " was not found");
+        } catch (DaoException e) {
+            e.printStackTrace();
         }
-        catch( DaoException e )
-        {
+
+
+
+    }
+    public static void addPlayer() {
+        PlayerDaoInterface IPlayerDao = new MySqlPlayerDao();
+        int salary = -1;
+        String playerName = "";
+        String teamName = "";
+        String manager = "";
+        String coach = "";
+        String city = "";
+        Scanner keyboard = new Scanner(System.in);
+
+        while (salary < 1) {
+            System.out.println("Enter player salary: ");
+            salary = keyboard.nextInt();
+        }
+        ;
+
+        while (playerName == "") {
+            System.out.println("Enter Player First Name: ");
+            playerName = keyboard.next();
+        }
+        ;
+
+        while (teamName == "") {
+            System.out.println("Enter Team Name: ");
+            teamName = keyboard.next();
+        }
+        ;
+
+        while (manager == "") {
+            System.out.println("Enter Manager name: ");
+            manager = keyboard.next();
+        }
+        ;
+
+        while (coach == "") {
+            System.out.println("Enter coach name: ");
+            coach = keyboard.next();
+        }
+        ;
+
+        while (city == "") {
+            System.out.println("Enter city name: ");
+            city = keyboard.next();
+        }
+        ;
+        try {
+            IPlayerDao.addPlayer(salary, playerName, teamName, manager, coach, city);
+            System.out.println("Insert New PLayer is a SUCCESS!");
+        } catch (DaoException e) {
             e.printStackTrace();
         }
 
     }
 }
+

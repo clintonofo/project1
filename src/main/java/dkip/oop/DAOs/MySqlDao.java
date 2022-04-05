@@ -8,19 +8,21 @@ package dkip.oop.DAOs;
  *
  */
 
+import dkip.oop.DTOs.team;
 import dkip.oop.Exceptions.DaoException;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
-public class MySqlDao
+public abstract class MySqlDao
 {
     public Connection getConnection() throws DaoException
     {
         String driver = "com.mysql.cj.jdbc.Driver";
-        String url = "jdbc:mysql://localhost:3306/project1";
+        String url = "jdbc:mysql://localhost:3306/user_database";
         String username = "root";
         String password = "";
         Connection connection = null;
@@ -60,4 +62,7 @@ public class MySqlDao
             System.exit(1);
         }
     }
+
+    //
+    public abstract List<team> deletePlayerBySalary(int salary) throws DaoException;
 }

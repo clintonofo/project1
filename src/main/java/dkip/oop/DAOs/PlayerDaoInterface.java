@@ -31,7 +31,9 @@ public interface PlayerDaoInterface
 
     public List<team> findPlayerBySalary(int salary) throws DaoException;
 
-//    public List<Player> deletePlayerById( int id ) throws DaoException;
+   public List<team> deletePlayerBySalary( int salary ) throws DaoException;
+
+    public void addPlayer(int salary,String playerName,String teamName, String manager, String coach, String city) throws DaoException;
 
 }
 

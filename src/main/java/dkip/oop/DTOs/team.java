@@ -97,4 +97,7 @@ public class team
                 ", city='" + city + '\'' +
                 '}';
     }
+
+    public void add(team z) {
+    }
 }
