@@ -183,7 +183,7 @@ public class MySqlPlayerDao extends MySqlDao implements PlayerDaoInterface {
             connection = this.getConnection();
             // Execute a query
             System.out.println("Inserting records into the table...");
-            String query = "INSERT INTO players VALUES (null, ?,?,?,?,?)";
+            String query = "INSERT INTO user VALUES (null, ?,?,?,?,?,?)";
             preparedStatement = connection.prepareStatement(query);
 
             preparedStatement.setString(1, playerName);

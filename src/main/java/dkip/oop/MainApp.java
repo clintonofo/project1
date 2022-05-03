@@ -194,38 +194,39 @@ public class MainApp {
 
 
     public static void database() {
-        System.out.println("\nConnecting to MySQL Database called \"user_database\" using MySQL JDBC Driver");
-        String url = "jdbc:mysql://localhost/";
-        String dbName = "user_database";
-        String userName = "root";
-        String password = "";
-        try (Connection conn = DriverManager.getConnection(url + dbName, userName, password)) {
-            System.out.println("\nConnected to the database.");
-            Statement statement = conn.createStatement();
-            String sqlQuery = "select * from user";
-            ResultSet resultSet = statement.executeQuery(sqlQuery);
-            while (resultSet.next()) {
-                String playerName = resultSet.getString("player_name");
-                String teamName = resultSet.getString("team_name");
-                int salary = resultSet.getInt("salary");
-                String manager = resultSet.getString("manager_name");
-                String coach = resultSet.getString("coach_name");
-                String city = resultSet.getString("city");
-
-
-                System.out.print("Player name = " + playerName + ", ");
-                System.out.print("team name = " + teamName + ", ");
-                System.out.print("salary = " + salary + ", ");
-                System.out.println("manager : " + manager);
-                System.out.println("coach : " + coach);
-                System.out.println("city : " + city);
-            }
-            System.out.println("\nFinished - Disconnected from database");
-        } catch (SQLException ex) {
-            System.out.println("Failed to connect to database - check MySQL is running and that you are using the correct database details");
-            ex.printStackTrace();
-        }
+//        System.out.println("\nConnecting to MySQL Database called \"user_database\" using MySQL JDBC Driver");
+//        String url = "jdbc:mysql://localhost/";
+//        String dbName = "user_database";
+//        String userName = "root";
+//        String password = "";
+//        try (Connection conn = DriverManager.getConnection(url + dbName, userName, password)) {
+//            System.out.println("\nConnected to the database.");
+//            Statement statement = conn.createStatement();
+//            String sqlQuery = "select * from user";
+//            ResultSet resultSet = statement.executeQuery(sqlQuery);
+//            while (resultSet.next()) {
+//                String playerName = resultSet.getString("player_name");
+//                String teamName = resultSet.getString("team_name");
+//                int salary = resultSet.getInt("salary");
+//                String manager = resultSet.getString("manager_name");
+//                String coach = resultSet.getString("coach_name");
+//                String city = resultSet.getString("city");
+//
+//
+//                System.out.print("Player name = " + playerName + ", ");
+//                System.out.print("team name = " + teamName + ", ");
+//                System.out.print("salary = " + salary + ", ");
+//                System.out.println("manager : " + manager);
+//                System.out.println("coach : " + coach);
+//                System.out.println("city : " + city);
+//            }
+//            System.out.println("\nFinished - Disconnected from database");
+//        } catch (SQLException ex) {
+//            System.out.println("Failed to connect to database - check MySQL is running and that you are using the correct database details");
+//            ex.printStackTrace();
+//        }
         PlayerDaoInterface IPlayerDao = new MySqlPlayerDao();
+        System.out.println("Feature 7");
         try {
             System.out.println("\nCall findAllPlayers()");
             List<dkip.oop.DTOs.team> teams = IPlayerDao.findAllPlayers();
@@ -240,13 +241,16 @@ public class MainApp {
 
             // test dao - with username and password that we know are present in the database
             System.out.println("\nCall: findPlayerBySalary()");
-            int salary = 2;
+            int salary = 15000;
             List<dkip.oop.DTOs.team> teams1 = IPlayerDao.findPlayerBySalary(salary);
 
-            if (teams1 != null)
-                System.out.println("Player found: " + teams1);
+            if (teams1.isEmpty())
+                System.out.println("Player not found:");
             else
-                System.out.println("Player salary not found");
+            {
+                for (dkip.oop.DTOs.team t : teams)
+                    System.out.println("Player: " + t.toString());
+            }
 
             // test dao - with an invalid username (i.e. not in database)
             salary = 23;
