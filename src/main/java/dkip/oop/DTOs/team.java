@@ -35,7 +35,9 @@ public class team
         this.city = city;
     }
 
+    public team() {
 
+    }
 
 
     public String getPlayerName() {

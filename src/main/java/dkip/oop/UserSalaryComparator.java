@@ -17,5 +17,6 @@ public class UserSalaryComparator
         int direction = sortType.getValue();
         return direction * (u1.getSalary() - u2.getSalary());
     }
+
 }
 

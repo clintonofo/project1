@@ -27,8 +27,8 @@ public class MainApp {
             System.out.print("2.) Choose key\n");
             System.out.print("3.) TreeMap.\n");
             System.out.print("4.) Priority Queue for Salary.\n");
-            System.out.print("5.) FindAllPlayers.\n");
-            System.out.println("6.) Add players. \n");
+            System.out.print("5.) Priority Queue for Name.\n");
+            System.out.println("6.)F \n");
             System.out.print("7.) Exit\n");
             System.out.print("\nEnter Your Menu Choice: ");
 
@@ -179,15 +179,36 @@ public class MainApp {
             while (iterator.hasNext()) {
                 System.out.println(teamQueue.remove());
             }
-        } else if (choice == 5) {
-
-            database();
-
         }
 
+        else if (choice == 5) {
+
+            PriorityQueue<team> teamQueue = new PriorityQueue<team>(
+                    new ComparatorPlayerName(SortType.Ascending));
+
+            teamQueue.add(new team("John", "moons", 15000, "ben", "sam,", "atlanta"));
+            teamQueue.add(new team("Eoin", "rockets", 25000, "john", "oliver,", "san fracnsio"));
+            teamQueue.add(new team("liam", "spices", 35000, "ben", "sam,", "philly"));
+            teamQueue.add(new team("clinton", "ice", 5000, "rita", "sammy,", "la"));
+            teamQueue.add(new team("allen", "lakers", 15000, "luke", "sam,", "la"));
+            teamQueue.add(new team("barry", "warriors", 25000, "benson", "jamal,", "golden state"));
+            teamQueue.add(new team("lia", "clippers", 65000, "ella", "rio,", "charlotte"));
+            teamQueue.add(new team("rhia", "zooms", 15000, "lia", "clinton,", "cleveland"));
+            teamQueue.add(new team("clinton", "heat", 10000, "elsa", "ronaldo,", "chicagi"));
+            teamQueue.add(new team("demar", "raptors", 20000, "leon", "samuel,", "toronto"));
+
+
+            System.out.println("Values in order of Name Priority:");
+            //iterator & remove
+            Iterator<team> iterator = teamQueue.iterator();
+            while (iterator.hasNext()) {
+                System.out.println(teamQueue.remove());
+            }
+
+        }
         else if (choice == 6)
         {
-            addPlayer();
+            System.out.println("The Big O Complexity is 2");
         }
 
     }

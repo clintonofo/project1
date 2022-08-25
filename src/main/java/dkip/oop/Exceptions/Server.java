@@ -1,35 +1,34 @@
 package dkip.oop.Exceptions;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import dkip.oop.DAOs.MySqlPlayerDao;
 import dkip.oop.DAOs.PlayerDaoInterface;
 import dkip.oop.DTOs.team;
-//import Exceptions.DaoException;
-import com.google.gson.Gson;
+import dkip.oop.Exceptions.DaoException;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.Scanner;
 
-import static com.sun.tools.classfile.Attribute.Exceptions;
-
-public class Server {
-    public static void main(String[] args) {
+public class Server
+{
+    public static void main(String[] args)
+    {
         Server server = new Server();
         server.start();
     }
 
-    public void start() {
-        try {
+    public void start()
+    {
+        try
+        {
             ServerSocket ss = new ServerSocket(8080);  // set up ServerSocket to listen for connections on port 8080
 
             System.out.println("Server: Server started. Listening for connections on port 8080...");
 
             int clientNumber = 0;  // a number for clients that the server allocates as clients connect
-
             while (true)    // loop continuously to accept new client connections
             {
                 Socket socket = ss.accept();    // listen (and wait) for a connection, accept the connection,
@@ -47,7 +46,9 @@ public class Server {
                 System.out.println("Server: ClientHandler started in thread for client " + clientNumber + ". ");
                 System.out.println("Server: Listening for further connections...");
             }
-        } catch (IOException e) {
+
+        } catch (IOException e)
+        {
             System.out.println("Server: IOException: " + e);
         }
         System.out.println("Server: Server exiting, Goodbye!");
@@ -59,9 +60,13 @@ public class Server {
         PrintWriter socketWriter;
         Socket socket;
         int clientNumber;
+        PlayerDaoInterface IPlayerDao;
 
-        public ClientHandler(Socket clientSocket, int clientNumber) {
-            try {
+        public ClientHandler(Socket clientSocket, int clientNumber)
+        {
+            IPlayerDao = new MySqlPlayerDao();
+            try
+            {
                 InputStreamReader isReader = new InputStreamReader(clientSocket.getInputStream());
                 this.socketReader = new BufferedReader(isReader);
 
@@ -72,54 +77,103 @@ public class Server {
 
                 this.socket = clientSocket;  // store socket ref for closing
 
-            } catch (IOException ex) {
+            } catch (IOException ex)
+            {
                 ex.printStackTrace();
             }
         }
 
         @Override
-        public void run() {
+        public void run()
+        {
             String message;
-            Gson gson = new Gson();
-            String msg = null;
-            MySqlPlayerDao sql = new MySqlPlayerDao();
-            try {
-                while ((message = socketReader.readLine()) != null) {
+
+            try
+            {
+                while ((message = socketReader.readLine()) != null)
+                {
                     System.out.println("Server: (ClientHandler): Read command from client " + clientNumber + ": " + message);
-                    System.out.println(message);
-                    message.toLowerCase();
-                    if (message.startsWith("bysalary")) {
-                        try {
-                            int number = 0;
+
+                    if (message.startsWith("DisplayPlayerBySalary"))
+                    {
+                        System.out.println("in DisplayPlayerBySalary.......");
+                       try {
                             String tokens[] = message.split(" ");
-                            number = Integer.parseInt(tokens[1]);
-                            List<team> playersList = List.of(sql.findPlayerBySalary(number));
-                            msg = gson.toJson(playersList);
-                        } catch (DaoException e) {
+                            String salary = tokens[1];
+                            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                            //convert list of players to JSON
+                            System.out.println("in DisplayPlayerBySalary...... about to call dao.");
+                            String players = gson.toJson(IPlayerDao.findPlayerBySalary(Integer.parseInt(salary)));
+                            System.out.println("Players by salary = " + players);
+                            socketWriter.println(players);
+                        } catch( DaoException e )
+                        {
                             e.printStackTrace();
                         }
-
-                        socketWriter.println(msg);  // send message to client
-                    } else if (message.startsWith("all")) {
+                    }
+                    else if (message.startsWith("DisplayAllPlayers"))
+                    {
+                        System.out.println("in DisplayAllPlayers.......");
                         try {
-                            List<team> playersList = sql.findAllPlayers();
-                            msg = gson.toJson(playersList);
+                            List players = IPlayerDao.FindAllPlayersJsonForamt() ;
+                            System.out.println("Players = " + players);
+                            socketWriter.println(players);
+                        } catch( DaoException e ) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else if (message.startsWith("AddPlayer"))
+                    {
+//                        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+//                        String players = null;
+//                        int player_id = -1;
+//                        String firstname = "";
+//                        String lastname = "";
+//                        String position = "";
+//                        String state = "";
+//                        int age = -1;
+//                        try {
+//                            IPlayerDao.addPlayer(player_id, firstname, lastname, position, state, age);
+//                            System.out.println("Insert New PLayer is a SUCCESS!");
+//                            players = gson.toJson(IPlayerDao.findAllPlayers());
+//                            System.out.println("Players = " + players);
+//                        } catch (DaoException e) {
+//                            e.printStackTrace();
+//                        }
+//                        socketWriter.println(players);  // send message to client
+                    }
+                    else if (message.startsWith("DeletePlayer"))
+                    {
+                        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                        String players = null;
+                        PlayerDaoInterface IPlayerDao = new MySqlPlayerDao();
+                        try {
+                            String displayId = socketReader.readLine();
+                            players =gson.toJson(IPlayerDao.deletePlayerBySalary(Integer.parseInt(displayId)));
+                            System.out.println("Players by id = " + players);
+                            if (players != null)
+                                System.out.println("Player with id " + displayId + " was found and deleted");
+                            else
+                                System.out.println("Player with " + displayId + " was not found");
                         } catch (DaoException e) {
                             e.printStackTrace();
                         }
-
-                        socketWriter.println(msg);
-                    } else {
+                        socketWriter.println(players);  // send message to client
+                    }
+                    else
+                    {
                         socketWriter.println("I'm sorry I don't understand :(");
                     }
                 }
 
                 socket.close();
 
-            } catch (IOException ex) {
+            } catch (IOException ex)
+            {
                 ex.printStackTrace();
             }
             System.out.println("Server: (ClientHandler): Handler for Client " + clientNumber + " is terminating .....");
         }
     }
+
 }

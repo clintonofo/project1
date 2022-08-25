@@ -22,6 +22,7 @@ package dkip.oop.DAOs;
 
 import dkip.oop.DTOs.team;
 import dkip.oop.Exceptions.DaoException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -35,5 +36,8 @@ public interface PlayerDaoInterface
 
     public void addPlayer(int salary,String playerName,String teamName, String manager, String coach, String city) throws DaoException;
 
+    public List<JSONObject> FindAllPlayersJsonForamt() throws DaoException;
+
+    public List<JSONObject> FindAllPlayersUsingSalaryJsonForamt(int salary)  throws DaoException;
 }
 

@@ -1,99 +1,140 @@
 package dkip.oop.Exceptions;
-
-
+import dkip.oop.DAOs.MySqlPlayerDao;
+import dkip.oop.DAOs.PlayerDaoInterface;
 import dkip.oop.DTOs.team;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import dkip.oop.Exceptions.DaoException;
+
+import dkip.oop.DAOs.MySqlPlayerDao;
+import dkip.oop.DAOs.PlayerDaoInterface;
+
+import dkip.oop.Exceptions.DaoException;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.lang.reflect.Type;
 import java.net.Socket;
 import java.util.List;
 import java.util.Scanner;
 
-    public class Client {
-        public static void main(String[] args) {
-            Client client = new Client();
-            client.start();
-        }
+public class Client
+{
+    public static void main(String[] args)
+    {
+        Client client = new Client();
+        client.start();
+    }
 
-        public void start() {
-            Scanner in = new Scanner(System.in);
-            try {
-                Socket socket = new Socket("localhost", 8080);  // connect to server socket
-                System.out.println("Client: Port# of this client : " + socket.getLocalPort());
-                System.out.println("Client: Port# of Server :" + socket.getPort());
-                System.out.println("Client message: The Client is running and has connected to the server");
+    public void start()
+    {
+        Scanner in = new Scanner(System.in);
+        try {
+            Socket socket = new Socket("localhost", 8080);  // connect to server socket
+            System.out.println("Client: Port# of this client : " + socket.getLocalPort());
+            System.out.println("Client: Port# of Server :" + socket.getPort() );
 
-                OutputStream os = socket.getOutputStream();
-                PrintWriter socketWriter = new PrintWriter(os, true);   // true => auto flush buffers
-                Scanner socketReader = new Scanner(socket.getInputStream());
+            System.out.println("Client message: The Client is running and has connected to the server");
 
-                final String MENU_ITEMS = "\n*** MAIN MENU OF OPTION FOR OOPCA5 PART 4***\n"
-                        + "1. Display player By salary\n"
-                        // + "2. Display All\n"
-                        + "3. Exit\n"
-                        + "Enter Option [1,3]";
+            System.out.println("Please enter a command:  (\"DisplayPlayerBySalary\" to get player by salary,  or  " +
+                    "\"DisplayAllPlayers\" to get Display all Entities, or \"AddPlayer\" to get add, or \"DeletePlayer\" to get delete , or \"Get summary data\" to Summary) \n>");
+            String command = in.nextLine();
+            OutputStream os = socket.getOutputStream();
+            PrintWriter socketWriter = new PrintWriter(os, true);   // true => auto flush buffers
+            socketWriter.println(command);
+            Scanner socketReader = new Scanner(socket.getInputStream());  // wait for, and retrieve the reply
+            boolean keep_looping = true;
+            while(keep_looping == true) {
+                if (command.startsWith("DisplayPlayerBySalary"))   //we expect the server to return a time
+                {
+                    Scanner keyboard = new Scanner(System.in);
+                    System.out.println("Enter player salary");
+                    int salary = keyboard.nextInt();
+                    command = command +" "+salary;  // "DisplayPlayerById 24"
+                    socketWriter.println(command);  // sends command request to server
+                    // wait for and then read response
+                    String response = socketReader.nextLine();
+                    System.out.println("Client message: Response from server: \""  + response +"\"");
+                }
+                else if(command.startsWith("DisplayAllPlayers")){
+                    String players = socketReader.nextLine();
+                    System.out.println("Client message: Response from server: \"" + players + "\"");
+                }
+                else if(command.startsWith("AddPlayer")){
+                    int player_id =-1;
+                    String firstname = "";
+                    String lastname = "";
+                    String position = "";
+                    String state = "";
+                    int age = -1;
+                    Scanner keyboard = new Scanner(System.in);
 
-                final int DISPLAYBYSALARY = 1;
-                final int DISPLAYALL = 2;
-                final int EXIT = 3;
-                int option = 0;
-                do {
-                    System.out.println("\n" + MENU_ITEMS);
-                    // wait for, and retrieve the reply
-                    String usersInput = in.nextLine();
-                    Gson gson = new Gson();
-                    Type playerListType = new TypeToken<List<team>>() {
-                    }.getType();
-                    List<team> playersList;
-                    String command;
-
-                    option = Integer.parseInt(usersInput);
-                    switch
-                    (option) {
-                        case DISPLAYBYSALARY:
-                            System.out.println("Please enter an salary : ");
-                            int salary = in.nextInt();
-                            in.nextInt();
-
-                            command = "bysalary " + salary;
-                            socketWriter.println(command.toLowerCase());
-                            int findSalary = socketReader.nextInt();
-                            playersList = gson.fromJson(String.valueOf(findSalary), playerListType);
-                            for (team t : playersList) {
-                                System.out.println(t);
-                            }
-                            break;
-                        case DISPLAYALL:
-                            System.out.println("Display all option choosen");
-                            command = "all";
-                            socketWriter.println(command.toLowerCase());
-                            String findAll = socketReader.nextLine();
-                            playersList = gson.fromJson(findAll, playerListType);
-                            for (team t : playersList) {
-                                System.out.println(t);
-                            }
-                            break;
-                        case EXIT:
-                            System.out.println("Exit Menu option chosen");
-                            break;
-                        default:
-                            System.out.print("Invalid option - please enter number in range");
-                            break;
+                    while (player_id < 1) {
+                        System.out.println("Enter player Id: ");
+                        player_id = keyboard.nextInt();
                     }
-                } while (option != EXIT);
+                    ;
 
-                socketWriter.close();
-                socketReader.close();
-                socket.close();
-                System.out.println("\nExiting Main Menu.");
-                ;
-            } catch (IOException e) {
-                System.out.println("Client message: IOException: " + e);
+                    while (firstname == "") {
+                        System.out.println("Enter Player First Name: ");
+                        firstname = keyboard.next();
+                    }
+                    ;
+
+                    while (lastname == "") {
+                        System.out.println("Enter Player Last Name: ");
+                        lastname = keyboard.next();
+                    }
+                    ;
+
+                    while (position == "") {
+                        System.out.println("Enter Player Position: ");
+                        position = keyboard.next();
+                    }
+                    ;
+
+                    while (state == "") {
+                        System.out.println("Enter Player Nationality: ");
+                        state = keyboard.next();
+                    }
+                    ;
+
+                    while (age <= 0) {
+                        System.out.println("Enter Player's age: ");
+                        age = keyboard.nextInt();
+                    }
+                    ;
+                    String players = socketReader.nextLine();
+                    System.out.println("Client message: Response from server: \"" + players + "\"");
+                }
+                else if(command.startsWith("DeletePlayer")){
+                    String players = socketReader.nextLine();
+                    Scanner keyboard = new Scanner(System.in);
+                    System.out.println("Enter player id you want to delete");
+                    String player_Id = keyboard.next();
+                    if (players != null)
+                        if (players != null)
+                            System.out.println("Player with id " + player_Id + " was found and deleted");
+                        else
+                            System.out.println("Player with " + player_Id + " was not found");
+
+                    System.out.println("Client message: Response from server: \"" + players + "\"");
+                }
+                else
+                {
+                    String input = socketReader.nextLine();
+                    System.out.println("Client message: Response from server: \"" + input + "\"");
+                }
+                System.out.println("Enter next command: ");
+                command = in.nextLine();
+                socketWriter.println(command);
             }
+
+            socketWriter.close();
+            socketReader.close();
+            socket.close();
+
+        } catch (IOException e) {
+            System.out.println("Client message: IOException: "+e);
         }
     }
+}
 
