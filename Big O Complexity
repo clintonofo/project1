@@ -1,0 +1,3 @@
+Array List: add() – takes O(1) time; get - takes O(1) time; for loop - take O(N) time;
+Hashmap: get() - takes O(1) time; containsKey - takes O(1);
+Priority Queue: add() - O(log n); remove - O(log n); 
