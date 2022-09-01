@@ -59,47 +59,47 @@ public class Client
                     System.out.println("Client message: Response from server: \"" + players + "\"");
                 }
                 else if(command.startsWith("AddPlayer")){
-                    int player_id =-1;
-                    String firstname = "";
-                    String lastname = "";
-                    String position = "";
-                    String state = "";
-                    int age = -1;
+                    int salary =-1;
+                    String playerName = "";
+                    String teamName = "";
+                    String manager = "";
+                    String coach = "";
+                    String city = "";
                     Scanner keyboard = new Scanner(System.in);
 
-                    while (player_id < 1) {
-                        System.out.println("Enter player Id: ");
-                        player_id = keyboard.nextInt();
+                    while (salary < 1) {
+                        System.out.println("Enter player salary: ");
+                        salary = keyboard.nextInt();
                     }
                     ;
 
-                    while (firstname == "") {
-                        System.out.println("Enter Player First Name: ");
-                        firstname = keyboard.next();
+                    while (playerName == "") {
+                        System.out.println("Enter Player  Name: ");
+                        playerName = keyboard.next();
                     }
                     ;
 
-                    while (lastname == "") {
-                        System.out.println("Enter Player Last Name: ");
-                        lastname = keyboard.next();
+                    while (teamName == "") {
+                        System.out.println("Enter team Name: ");
+                        teamName = keyboard.next();
                     }
                     ;
 
-                    while (position == "") {
-                        System.out.println("Enter Player Position: ");
-                        position = keyboard.next();
+                    while (manager == "") {
+                        System.out.println("Enter manager name: ");
+                        manager = keyboard.next();
                     }
                     ;
 
-                    while (state == "") {
-                        System.out.println("Enter Player Nationality: ");
-                        state = keyboard.next();
+                    while (coach == "") {
+                        System.out.println("Enter coach name: ");
+                        coach = keyboard.next();
                     }
                     ;
 
-                    while (age <= 0) {
-                        System.out.println("Enter Player's age: ");
-                        age = keyboard.nextInt();
+                    while (city == "") {
+                        System.out.println("Enter city name: ");
+                        city = keyboard.next();
                     }
                     ;
                     String players = socketReader.nextLine();
@@ -108,13 +108,13 @@ public class Client
                 else if(command.startsWith("DeletePlayer")){
                     String players = socketReader.nextLine();
                     Scanner keyboard = new Scanner(System.in);
-                    System.out.println("Enter player id you want to delete");
-                    String player_Id = keyboard.next();
+                    System.out.println("Enter player salary you want to delete");
+                    int salary = keyboard.nextInt();
                     if (players != null)
                         if (players != null)
-                            System.out.println("Player with id " + player_Id + " was found and deleted");
+                            System.out.println("Player with salary " + salary + " was found and deleted");
                         else
-                            System.out.println("Player with " + player_Id + " was not found");
+                            System.out.println("Player with " + salary + " was not found");
 
                     System.out.println("Client message: Response from server: \"" + players + "\"");
                 }

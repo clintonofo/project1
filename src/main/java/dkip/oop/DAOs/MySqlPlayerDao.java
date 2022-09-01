@@ -519,16 +519,16 @@ public class MySqlPlayerDao extends MySqlDao implements PlayerDaoInterface {
             List<team> Value = new ArrayList<>();
             MySqlPlayerDao dao=new MySqlPlayerDao();
             Scanner sc=new Scanner(System.in);
-            System.out.println("1) Find All Entities");
-            System.out.println("2) Find and display  All Entities by Using Salary");
+            System.out.println("1) Find All players");
+            System.out.println("2) Find and display  All players by Using Salary");
             System.out.println("3) Delete The Player");
             System.out.println("4) Add New Player");
-            System.out.println("5) List All Entities Using Filter");
-            System.out.println("6) List All Entity in JSON Foramte");
-            System.out.println("7) List All Player Using Their Salary in JSON Foramte");
-            System.out.println("8) Listing  All Record Using Id in JSON Foramte");
-            System.out.println("9) Display All Enitiy in JSON Formate");
-            System.out.println("11) Delete Entity by Salary");
+            System.out.println("5) List All players Using Filter");
+            System.out.println("6) List All players in JSON Foramte");
+            System.out.println("7) List All Player Using Their Salary in JSON Format");
+            System.out.println("8) Listing  All Record Using salart in JSON Format");
+            System.out.println("9) Display All players in JSON Format");
+            System.out.println("11) Delete player by Salary");
             System.out.println("12) Back");
             int a=sc.nextInt();
             if(a==1)

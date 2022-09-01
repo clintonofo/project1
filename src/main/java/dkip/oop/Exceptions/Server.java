@@ -124,23 +124,23 @@ public class Server
                     }
                     else if (message.startsWith("AddPlayer"))
                     {
-//                        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-//                        String players = null;
-//                        int player_id = -1;
-//                        String firstname = "";
-//                        String lastname = "";
-//                        String position = "";
-//                        String state = "";
-//                        int age = -1;
-//                        try {
-//                            IPlayerDao.addPlayer(player_id, firstname, lastname, position, state, age);
-//                            System.out.println("Insert New PLayer is a SUCCESS!");
-//                            players = gson.toJson(IPlayerDao.findAllPlayers());
-//                            System.out.println("Players = " + players);
-//                        } catch (DaoException e) {
-//                            e.printStackTrace();
-//                        }
-//                        socketWriter.println(players);  // send message to client
+                        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                        String players = null;
+                        int salary =-1;
+                    String playerName = "";
+                    String teamName = "";
+                    String manager = "";
+                    String coach = "";
+                    String city = "";
+                        try {
+                            IPlayerDao.addPlayer(salary, playerName, teamName, manager, coach, city);
+                            System.out.println("Insert New PLayer is a SUCCESS!");
+                            players = gson.toJson(IPlayerDao.findAllPlayers());
+                            System.out.println("Players = " + players);
+                        } catch (DaoException e) {
+                            e.printStackTrace();
+                        }
+                        socketWriter.println(players);  // send message to client
                     }
                     else if (message.startsWith("DeletePlayer"))
                     {
@@ -148,13 +148,13 @@ public class Server
                         String players = null;
                         PlayerDaoInterface IPlayerDao = new MySqlPlayerDao();
                         try {
-                            String displayId = socketReader.readLine();
-                            players =gson.toJson(IPlayerDao.deletePlayerBySalary(Integer.parseInt(displayId)));
-                            System.out.println("Players by id = " + players);
+                            String displaySalary = socketReader.readLine();
+                            players =gson.toJson(IPlayerDao.deletePlayerBySalary(Integer.parseInt(displaySalary)));
+                            System.out.println("Players by salary = " + players);
                             if (players != null)
-                                System.out.println("Player with id " + displayId + " was found and deleted");
+                                System.out.println("Player with salart " + displaySalary + " was found and deleted");
                             else
-                                System.out.println("Player with " + displayId + " was not found");
+                                System.out.println("Player with " + displaySalary + " was not found");
                         } catch (DaoException e) {
                             e.printStackTrace();
                         }
